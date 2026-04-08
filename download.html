@@ -1,126 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Download Templates | ATSResumePro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(180deg, #0a0a0a, #111);
-      color: white;
-      padding: 40px 20px;
-      text-align: center;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATS Resume Builder</title>
 
-    .wrapper {
-      max-width: 1200px;
-      margin: auto;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-    h1 {
-      font-size: 38px;
-      margin-bottom: 12px;
-    }
-
-    p {
-      color: #aaa;
-      font-size: 16px;
-      margin-bottom: 30px;
-    }
-
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .card {
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 24px;
-      width: 260px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-    }
-
-    .card h3 {
-      margin-top: 0;
-      font-size: 22px;
-      color: white;
-    }
-
-    .card p {
-      font-size: 14px;
-      color: #aaa;
-      min-height: 48px;
-      margin-bottom: 16px;
-    }
-
-    .button {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 14px 24px;
-      background: linear-gradient(90deg, #00ffcc, #00aaff);
-      color: black;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 12px;
-      transition: 0.3s;
-    }
-
-    .button:hover {
-      transform: scale(1.05);
-    }
-
-    .small {
-      margin-top: 30px;
-      color: #aaa;
-      font-size: 14px;
-    }
-  </style>
+<style>
+body {margin:0;font-family:'Poppins';background:#0a0a0a;color:white;text-align:center;}
+.wrapper {max-width:1000px;margin:auto;padding:20px;}
+input,textarea {width:90%;padding:10px;margin:8px;}
+button {padding:12px;background:#00ffcc;border:none;border-radius:8px;cursor:pointer;}
+#formSection{display:none;}
+.resume{display:flex;background:white;color:black;margin-top:20px;}
+.sidebar{width:35%;background:#e6e6e6;padding:20px;}
+.main{width:65%;padding:20px;}
+.profile-img{width:120px;height:120px;border-radius:50%;overflow:hidden;margin:auto;background:#ccc;}
+.profile-img img{width:100%;height:100%;object-fit:cover;}
+.bar{height:6px;background:#ccc;}
+.fill{height:6px;background:black;}
+.timeline{position:relative;margin-left:20px;}
+.timeline::before{content:'';position:absolute;left:-10px;width:2px;height:100%;background:black;}
+.dot{width:10px;height:10px;background:black;border-radius:50%;position:absolute;left:-15px;top:5px;}
+</style>
 </head>
+
 <body>
-  <div class="wrapper">
-    <h1>📂 Download Your Templates</h1>
-    <p>Select and download your ATS-friendly resume templates below.</p>
 
-    <div class="cards">
-      <div class="card">
-        <h3>Template 1</h3>
-        <p>Clean ATS-friendly resume template for fresher and experienced professionals.</p>
-        <a href="files/template1.pdf" class="button" download>Download Template 1</a>
-      </div>
+<div class="wrapper">
 
-      <div class="card">
-        <h3>Template 2</h3>
-        <p>Professional editable resume template for job applications and quick customization.</p>
-        <a href="files/template2.docx" class="button" download>Download Template 2</a>
-      </div>
+<h1>🚀 Build Resume</h1>
+<button onclick="start()">Start</button>
 
-      <div class="card">
-        <h3>Template 3</h3>
-        <p>Modern ATS resume template with a strong and clean layout.</p>
-        <a href="files/template3.pdf" class="button" download>Download Template 3</a>
-      </div>
+<div id="formSection">
 
-      <div class="card">
-        <h3>Template 4</h3>
-        <p>Minimal professional resume template designed for better readability.</p>
-        <a href="files/template4.docx" class="button" download>Download Template 4</a>
-      </div>
+<input id="name" placeholder="Full Name">
+<input id="title" placeholder="Job Title">
+<input id="phone" placeholder="Phone">
+<input id="email" placeholder="Email">
 
-      <div class="card">
-        <h3>Template 5</h3>
-        <p>Premium-style ATS resume template suitable for multiple job roles.</p>
-        <a href="files/template5.pdf" class="button" download>Download Template 5</a>
-      </div>
-    </div>
+<input type="file" id="imageUpload">
 
-    <p class="small">🔒 Secure transaction via Razorpay</p>
-  </div>
+<textarea id="profile" placeholder="Profile"></textarea>
+<button onclick="aiImprove('profile')">✨ Improve with AI</button>
+
+<textarea id="skills" placeholder="Skills (comma separated)"></textarea>
+
+<h3>Experience</h3>
+<div id="experienceContainer"></div>
+<button onclick="addExperience()">+ Add</button>
+
+<h3>Education</h3>
+<div id="educationContainer"></div>
+<button onclick="addEducation()">+ Add</button>
+
+<button onclick="saveData()">💾 Save</button>
+<button onclick="generateResume()">Generate</button>
+
+</div>
+
+<h2 id="atsScore"></h2>
+<div id="resume"></div>
+
+<button onclick="downloadPDF()">Download PDF</button>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+
+/* START */
+function start(){
+ document.getElementById("formSection").style.display="block";
+ loadData();
+}
+
+/* SAVE */
+function saveData(){
+ const data={
+  name:name.value,title:title.value,phone:phone.value,email:email.value,
+  profile:profile.value,skills:skills.value
+ };
+ localStorage.setItem("resumeData",JSON.stringify(data));
+ alert("Saved!");
+}
+
+/* LOAD */
+function loadData(){
+ let d=JSON.parse(localStorage.getItem("resumeData"));
+ if(!d) return;
+ name.value=d.name||"";
+ title.value=d.title||"";
+ phone.value=d.phone||"";
+ email.value=d.email||"";
+ profile.value=d.profile||"";
+ skills.value=d.skills||"";
+}
+
+/* ADD EXPERIENCE */
+function addExperience(){
+ let div=document.createElement("div");
+ div.innerHTML=`<input placeholder="Role"><input placeholder="Company"><textarea placeholder="Description"></textarea>`;
+ experienceContainer.appendChild(div);
+}
+
+/* ADD EDUCATION */
+function addEducation(){
+ let div=document.createElement("div");
+ div.innerHTML=`<input placeholder="Degree"><input placeholder="University">`;
+ educationContainer.appendChild(div);
+}
+
+/* AI */
+async function aiImprove(id){
+ let text=document.getElementById(id).value;
+
+ try{
+ let res=await fetch("https://your-render-url.onrender.com/ai",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({text})
+ });
+
+ let data=await res.json();
+ document.getElementById(id).value=data.result;
+ }catch{
+  alert("AI not connected yet");
+ }
+}
+
+/* ATS */
+function calculateATS(profile,skillsCount,expCount){
+ let s=40;
+ if(profile.length>80) s+=20;
+ if(skillsCount>=5) s+=20;
+ if(expCount>=2) s+=15;
+ return Math.min(s,98);
+}
+
+/* GENERATE */
+function generateResume(){
+
+let img="";
+if(imageUpload.files[0]){
+ img=`<img src="${URL.createObjectURL(imageUpload.files[0])}">`;
+}
+
+let expHTML="";
+let expBlocks=document.querySelectorAll("#experienceContainer div");
+
+expBlocks.forEach(e=>{
+ let i=e.querySelectorAll("input,textarea");
+ expHTML+=`<div class="timeline-item"><div class="dot"></div><div><b>${i[0].value}</b><br>${i[1].value}<br>${i[2].value}</div></div>`;
+});
+
+let eduHTML="";
+document.querySelectorAll("#educationContainer div").forEach(e=>{
+ let i=e.querySelectorAll("input");
+ eduHTML+=`<p><b>${i[0].value}</b><br>${i[1].value}</p>`;
+});
+
+let skillsArr=skills.value.split(",");
+let skillHTML="";
+skillsArr.forEach(s=>{
+ skillHTML+=`<div>${s}<div class="bar"><div class="fill" style="width:80%"></div></div></div>`;
+});
+
+let score=calculateATS(profile.value,skillsArr.length,expBlocks.length);
+atsScore.innerHTML="ATS Score: "+score+"%";
+
+resume.innerHTML=`
+<div class="resume">
+<div class="sidebar">
+<div class="profile-img">${img}</div>
+<h2>${name.value}</h2>
+<p>${title.value}</p>
+
+<h3>Profile</h3><p>${profile.value}</p>
+
+<h3>Contact</h3><p>${phone.value}</p><p>${email.value}</p>
+
+<h3>Skills</h3>${skillHTML}
+</div>
+
+<div class="main">
+<h2>Experience</h2><div class="timeline">${expHTML}</div>
+<h2>Education</h2>${eduHTML}
+</div>
+</div>`;
+
+resume.style.display="block";
+}
+
+/* PDF */
+function downloadPDF(){
+ html2pdf().from(resume).save("resume.pdf");
+}
+
+</script>
+
 </body>
 </html>
