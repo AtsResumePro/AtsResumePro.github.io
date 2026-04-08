@@ -240,26 +240,27 @@
     .mini-page.t1::before {
       content: "";
       position: absolute;
-      left: 0; right: 0; top: 0;
-      height: 18px;
-      background: #111827;
+      left: 0; top: 0; bottom: 0;
+      width: 27px;
+      background: #e7e7e7;
     }
 
     .mini-page.t1::after {
       content: "";
       position: absolute;
-      left: 8px;
-      top: 28px;
-      width: 60px;
-      height: 2px;
-      background: #202020;
+      left: 7px;
+      top: 10px;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: #c5c5c5;
       box-shadow:
-        0 10px 0 0 #d0d0d0,
-        0 18px 0 0 #dadada,
-        0 30px 0 0 #202020,
-        0 40px 0 0 #d0d0d0,
-        0 48px 0 0 #dadada,
-        0 60px 0 0 #d0d0d0;
+        0 24px 0 0 #d3d3d3,
+        26px 10px 0 0 #202020,
+        26px 18px 0 0 #a1a1a1,
+        26px 30px 0 0 #c5c5c5,
+        26px 38px 0 0 #cfcfcf,
+        26px 48px 0 0 #d8d8d8;
     }
 
     .mini-page.t2::before {
@@ -594,6 +595,14 @@
       padding: 16px;
     }
 
+    .action-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #eef5ff;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+
     .action-copy {
       font-size: 13px;
       color: var(--muted);
@@ -632,6 +641,7 @@
 
     .hidden { display: none !important; }
 
+    /* ===== Template Shared Resume Styles ===== */
     .resume-link {
       text-decoration: none;
       color: inherit;
@@ -650,6 +660,16 @@
       color: #0f172a;
     }
 
+    .resume-muted {
+      color: #5b6472;
+      line-height: 1.7;
+    }
+
+    .resume-body {
+      line-height: 1.7;
+      color: #243041;
+    }
+
     .resume-list,
     .resume-bullets {
       padding-left: 18px;
@@ -661,6 +681,12 @@
       margin-bottom: 7px;
       line-height: 1.65;
       break-inside: avoid;
+    }
+
+    .meta-line {
+      color: #5b6472;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .contact-stack {
@@ -675,88 +701,85 @@
       font-size: 13px;
     }
 
-    .resume-body {
-      line-height: 1.7;
-      color: #243041;
-      font-size: 13px;
-    }
-
-    /* ===== Template 1: ATS Elite Classic ===== */
+    /* ===== Template 1 ===== */
     .tpl-1 {
-      min-height: var(--a4-height);
-      background: #ffffff;
-      color: #1f2937;
-      padding: 34px 42px 38px;
-    }
-
-    .tpl-1 .topbar {
       display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 20px;
-      align-items: start;
-      padding-bottom: 16px;
-      border-bottom: 2px solid #111827;
-      margin-bottom: 18px;
+      grid-template-columns: 31% 69%;
+      min-height: var(--a4-height);
+      background: #fff;
     }
 
-    .tpl-1 .identity h1 {
-      margin: 0;
-      font-size: 34px;
-      line-height: 1.04;
-      letter-spacing: -0.03em;
+    .tpl-1 .left {
+      background: #ececec;
+      padding: 38px 28px;
+      color: #1f2937;
+    }
+
+    .tpl-1 .right {
+      padding: 38px 34px;
+      color: #1f2937;
+    }
+
+    .tpl-1 .photo {
+      width: 128px;
+      height: 128px;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 0 auto 18px;
+      background: #d1d5db;
+    }
+
+    .tpl-1 .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tpl-1 .name {
+      text-align: center;
+      font-size: 30px;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
       font-weight: 800;
-      color: #111827;
+      margin: 0 0 6px;
       word-break: break-word;
     }
 
-    .tpl-1 .identity .headline {
-      margin-top: 6px;
-      font-size: 14px;
+    .tpl-1 .headline {
+      text-align: center;
       color: #4b5563;
-      line-height: 1.6;
-      font-weight: 600;
+      font-size: 14px;
+      margin: 0 0 24px;
+      line-height: 1.5;
+      word-break: break-word;
     }
 
-    .tpl-1 .contact-grid {
-      display: grid;
-      gap: 6px;
-      text-align: right;
-      min-width: 240px;
+    .tpl-1 .resume-section-title {
+      padding-bottom: 6px;
+      border-bottom: 2px solid #1f2937;
+      margin-bottom: 12px;
     }
 
-    .tpl-1 .contact-grid .contact-item-print {
-      font-size: 12px;
-      line-height: 1.45;
-      color: #243041;
+    .tpl-1 .skill-row {
+      margin-bottom: 12px;
     }
 
-    .tpl-1 .summary-block {
-      margin-bottom: 18px;
-    }
-
-    .tpl-1 .summary-text {
+    .tpl-1 .skill-label {
       font-size: 13px;
-      line-height: 1.8;
-      color: #243041;
-      margin: 0;
+      margin-bottom: 6px;
+      display: block;
+      color: #253042;
     }
 
-    .tpl-1 .skills-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px 10px;
-      margin-top: 6px;
+    .tpl-1 .bar {
+      height: 6px;
+      background: #d6d6d6;
+      overflow: hidden;
     }
 
-    .tpl-1 .skill-chip {
-      font-size: 12px;
-      line-height: 1;
-      padding: 8px 10px;
-      border: 1px solid #d7dde7;
-      border-radius: 999px;
-      background: #f8fafc;
-      color: #233041;
-      font-weight: 500;
+    .tpl-1 .fill {
+      height: 100%;
+      background: #1f2937;
     }
 
     .tpl-1 .entry {
@@ -767,8 +790,8 @@
     .tpl-1 .entry-title {
       font-size: 15px;
       font-weight: 800;
-      color: #111827;
       margin-bottom: 4px;
+      color: #111827;
     }
 
     .tpl-1 .entry-sub {
@@ -776,28 +799,12 @@
       color: #4b5563;
       margin-bottom: 8px;
       font-weight: 600;
-      line-height: 1.5;
     }
 
     .tpl-1 .entry-body {
-      font-size: 13px;
-      line-height: 1.75;
       color: #243041;
-    }
-
-    .tpl-1 .photo {
-      width: 74px;
-      height: 74px;
-      border-radius: 14px;
-      overflow: hidden;
-      background: #e5e7eb;
-      margin-left: auto;
-    }
-
-    .tpl-1 .photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      line-height: 1.7;
+      font-size: 13px;
     }
 
     /* ===== Template 2 ===== */
@@ -1088,18 +1095,14 @@
       .resume-stage {
         padding: 12px;
       }
-      .tpl-2 .content, .tpl-3 .grid, .tpl-1 .topbar {
+      .tpl-1, .tpl-2 .content, .tpl-3 .grid {
         grid-template-columns: 1fr !important;
       }
       .tpl-2 .header-grid {
         grid-template-columns: 1fr;
       }
-      .tpl-2 .header-side,
-      .tpl-1 .contact-grid {
+      .tpl-2 .header-side {
         text-align: left;
-      }
-      .tpl-1 {
-        padding: 24px;
       }
     }
 
@@ -1182,14 +1185,14 @@
           <div class="flow-label"><span class="step-number">2</span>Choose Template</div>
           <p class="sub-copy">Pick one premium template family. The final rendering engine uses separate layouts, spacing rules, and section behavior for each.</p>
           <div class="templates-grid" id="templateCards">
-            <div class="template-card active" data-template="ats-elite-classic">
+            <div class="template-card active" data-template="sidebar-premium">
               <div class="template-check">✓</div>
               <div class="template-thumb">
                 <div class="mini-page t1"></div>
               </div>
               <div class="template-meta">
-                <div class="template-name">ATS Elite Classic</div>
-                <div class="template-desc">Clean ATS-first executive layout with premium single-column balance.</div>
+                <div class="template-name">Sidebar Premium</div>
+                <div class="template-desc">Elegant sidebar layout with premium profile balance.</div>
               </div>
             </div>
 
@@ -1231,7 +1234,7 @@
             <div class="grid-2">
               <div class="field">
                 <label for="fullName">Full Name</label>
-                <input id="fullName" type="text" placeholder="Your Name">
+                <input id="fullName" type="text" placeholder="Sophia Kharati">
               </div>
               <div class="field">
                 <label for="headline">Professional Headline / Job Title</label>
@@ -1253,7 +1256,7 @@
                 <label for="linkedin">LinkedIn URL</label>
                 <input id="linkedin" type="url" placeholder="https://linkedin.com/in/yourprofile">
               </div>
-              <div class="field" style="grid-column: 1 / -1;">
+              <div class="field grid-span-2" style="grid-column: 1 / -1;">
                 <label for="website">Website URL</label>
                 <input id="website" type="url" placeholder="https://yourwebsite.com">
               </div>
@@ -1292,6 +1295,15 @@
           </div>
 
           <div class="form-section">
+            <h3 class="form-title">Projects</h3>
+            <div class="field">
+              <label for="projects">Projects</label>
+              <textarea id="projects" data-limit="120" placeholder="Describe key projects. Use a new line for each project or bullet-style content."></textarea>
+              <div class="counter" id="projectsCounter">0 / 120 words</div>
+            </div>
+          </div>
+
+          <div class="form-section">
             <div class="repeat-card-header">
               <h3 class="form-title" style="margin:0;">Education</h3>
               <button type="button" class="btn btn-secondary" id="addEducationBtn">+ Add Education</button>
@@ -1305,11 +1317,6 @@
               <label for="certifications">Certifications</label>
               <textarea id="certifications" data-limit="80" placeholder="One per line or separated by commas"></textarea>
               <div class="counter" id="certificationsCounter">0 / 80 words</div>
-            </div>
-            <div class="field" style="margin-top:12px;">
-              <label for="projects">Projects</label>
-              <textarea id="projects" data-limit="120" placeholder="Describe key projects. Use a new line for each project or bullet-style content."></textarea>
-              <div class="counter" id="projectsCounter">0 / 120 words</div>
             </div>
             <div class="field" style="margin-top:12px;">
               <label for="achievements">Achievements / Awards</label>
@@ -1381,10 +1388,10 @@
 
   <script>
     const AI_ENDPOINT = "https://your-render-url.onrender.com/ai";
-    const STORAGE_KEY = "atsresumepro-premium-builder-v2";
+    const STORAGE_KEY = "atsresumepro-premium-builder-v1";
 
     const state = {
-      selectedTemplate: "ats-elite-classic",
+      selectedTemplate: "sidebar-premium",
       imageDataUrl: "",
       generated: false
     };
@@ -1488,6 +1495,10 @@
       return `<a class="resume-link" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(text)}</a>`;
     }
 
+    function hasContent(value) {
+      return cleanText(value).length > 0;
+    }
+
     function clampWordCount(el) {
       const limit = Number(el.dataset.limit || 0);
       if (!limit) return;
@@ -1509,17 +1520,6 @@
       } else {
         refs.builderImagePreview.innerHTML = `No image<br>selected`;
       }
-    }
-
-    function updateInlineCounter(textarea, counterEl) {
-      const limit = Number(textarea.dataset.limit || 0);
-      const words = cleanText(textarea.value).split(" ").filter(Boolean);
-      if (limit && words.length > limit) {
-        textarea.value = words.slice(0, limit).join(" ");
-      }
-      const finalWords = cleanText(textarea.value).split(" ").filter(Boolean);
-      const count = finalWords[0] ? finalWords.length : 0;
-      counterEl.textContent = `${count} / ${limit} words`;
     }
 
     function createExperienceItem(data = {}) {
@@ -1554,7 +1554,9 @@
           <div class="counter exp-counter">0 / 120 words</div>
         </div>
       `;
-      card.querySelector(".remove-item-btn").addEventListener("click", () => card.remove());
+      card.querySelector(".remove-item-btn").addEventListener("click", () => {
+        card.remove();
+      });
       const textarea = card.querySelector(".exp-description");
       textarea.addEventListener("input", () => updateInlineCounter(textarea, card.querySelector(".exp-counter")));
       updateInlineCounter(textarea, card.querySelector(".exp-counter"));
@@ -1593,11 +1595,24 @@
           <div class="counter edu-counter">0 / 60 words</div>
         </div>
       `;
-      card.querySelector(".remove-item-btn").addEventListener("click", () => card.remove());
+      card.querySelector(".remove-item-btn").addEventListener("click", () => {
+        card.remove();
+      });
       const textarea = card.querySelector(".edu-details");
       textarea.addEventListener("input", () => updateInlineCounter(textarea, card.querySelector(".edu-counter")));
       updateInlineCounter(textarea, card.querySelector(".edu-counter"));
       refs.educationList.appendChild(card);
+    }
+
+    function updateInlineCounter(textarea, counterEl) {
+      const limit = Number(textarea.dataset.limit || 0);
+      const words = cleanText(textarea.value).split(" ").filter(Boolean);
+      if (limit && words.length > limit) {
+        textarea.value = words.slice(0, limit).join(" ");
+      }
+      const finalWords = cleanText(textarea.value).split(" ").filter(Boolean);
+      const count = finalWords[0] ? finalWords.length : 0;
+      counterEl.textContent = `${count} / ${limit} words`;
     }
 
     function collectExperience() {
@@ -1680,10 +1695,10 @@
         if (!refs.educationList.children.length) createEducationItem();
 
         refs.templateCards.forEach(card => {
-          const active = card.dataset.template === (data.template || "ats-elite-classic");
+          const active = card.dataset.template === (data.template || "sidebar-premium");
           card.classList.toggle("active", active);
         });
-        state.selectedTemplate = data.template || "ats-elite-classic";
+        state.selectedTemplate = data.template || "sidebar-premium";
 
         updateWordCounters();
         refs.saveStatus.textContent = "Saved data loaded. Re-upload photo if needed.";
@@ -1718,9 +1733,9 @@
       updateWordCounters();
     }
 
-    function sectionHtml(title, content) {
+    function sectionHtml(title, content, extraClass = "") {
       if (!content) return "";
-      return `<section class="resume-section">
+      return `<section class="resume-section ${extraClass}">
         <h3 class="resume-section-title">${escapeHtml(title)}</h3>
         ${content}
       </section>`;
@@ -1747,15 +1762,13 @@
       return `<div class="resume-body">${escapeHtml(text)}</div>`;
     }
 
-    function renderExperienceEntries(entries) {
+    function renderExperienceEntries(entries, className = "") {
       return entries.map(item => {
         const dateRange = formatDateRange(item.start, item.end);
         const subParts = [item.company, dateRange].filter(Boolean);
         const bullets = textToBullets(item.description);
-        const body = bullets.length > 1
-          ? renderBullets(bullets)
-          : (bullets[0] ? `<div class="entry-body">${escapeHtml(bullets[0])}</div>` : "");
-        return `<div class="entry">
+        const body = bullets.length > 1 ? renderBullets(bullets) : (bullets[0] ? `<div class="entry-body">${escapeHtml(bullets[0])}</div>` : "");
+        return `<div class="entry ${className}">
           ${item.role ? `<div class="entry-title">${escapeHtml(item.role)}</div>` : ""}
           ${subParts.length ? `<div class="entry-sub">${escapeHtml(subParts.join(" • "))}</div>` : ""}
           ${body}
@@ -1763,11 +1776,11 @@
       }).join("");
     }
 
-    function renderEducationEntries(entries) {
+    function renderEducationEntries(entries, className = "") {
       return entries.map(item => {
         const dateRange = formatDateRange(item.start, item.end);
         const subParts = [item.school, dateRange].filter(Boolean);
-        return `<div class="entry">
+        return `<div class="entry ${className}">
           ${item.degree ? `<div class="entry-title">${escapeHtml(item.degree)}</div>` : ""}
           ${subParts.length ? `<div class="entry-sub">${escapeHtml(subParts.join(" • "))}</div>` : ""}
           ${item.details ? `<div class="entry-body">${escapeHtml(item.details)}</div>` : ""}
@@ -1780,55 +1793,47 @@
       return `<ul class="resume-list">${items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
     }
 
-    function renderTemplateATSEliteClassic(data) {
+    function renderTemplateSidebarPremium(data) {
       const photo = data.imageDataUrl ? `<div class="photo"><img src="${data.imageDataUrl}" alt="Profile Photo"></div>` : "";
-      const topBar = `
-        <div class="topbar">
-          <div class="identity">
-            ${data.fullName ? `<h1>${escapeHtml(data.fullName)}</h1>` : ""}
-            ${data.headline ? `<div class="headline">${escapeHtml(data.headline)}</div>` : ""}
-          </div>
-          <div>
-            ${photo}
-            <div class="contact-grid" style="${photo ? 'margin-top:10px;' : ''}">
-              ${data.phone ? `<div class="contact-item-print">${escapeHtml(data.phone)}</div>` : ""}
-              ${data.email ? `<div class="contact-item-print">${escapeHtml(data.email)}</div>` : ""}
-              ${data.location ? `<div class="contact-item-print">${escapeHtml(data.location)}</div>` : ""}
-              ${data.linkedin ? `<div class="contact-item-print">${buildLink(data.linkedin, data.linkedin.replace(/^https?:\/\//i, ""))}</div>` : ""}
-              ${data.website ? `<div class="contact-item-print">${buildLink(data.website, data.website.replace(/^https?:\/\//i, ""))}</div>` : ""}
-            </div>
-          </div>
-        </div>
-      `;
-
-      const summarySection = data.summary ? `
-        <section class="resume-section summary-block">
-          <p class="summary-text">${escapeHtml(data.summary)}</p>
-        </section>
-      ` : "";
-
-      const skillsSection = data.skills.length
-        ? sectionHtml("Skills", `<div class="skills-row">${data.skills.map(skill => `<span class="skill-chip">${escapeHtml(skill)}</span>`).join("")}</div>`)
+      const skills = data.skills.length
+        ? data.skills.map((skill, index) => {
+            const widths = [92, 86, 82, 78, 74, 70];
+            const width = widths[index % widths.length];
+            return `<div class="skill-row">
+              <span class="skill-label">${escapeHtml(skill)}</span>
+              <div class="bar"><div class="fill" style="width:${width}%"></div></div>
+            </div>`;
+          }).join("")
         : "";
 
+      const summarySection = sectionHtml("Profile", renderParagraph(data.summary));
+      const contactSection = sectionHtml("Contact", renderContactList(data));
+      const skillsSection = sectionHtml("Skills", skills);
+      const languagesSection = sectionHtml("Languages", renderSimpleList(data.languages));
       const expSection = sectionHtml("Work Experience", renderExperienceEntries(data.experience));
       const projSection = sectionHtml("Projects", renderSimpleList(data.projects));
       const eduSection = sectionHtml("Education", renderEducationEntries(data.education));
-      const certSection = sectionHtml("Certifications", renderSimpleList(data.certifications));
-      const achieveSection = sectionHtml("Achievements / Awards", renderSimpleList(data.achievements));
-      const langSection = sectionHtml("Additional Information", data.languages.length ? `<div class="resume-body"><strong>Languages:</strong> ${escapeHtml(data.languages.join(", "))}</div>` : "");
+      const certSection = sectionHtml("Certifications / Training", renderSimpleList(data.certifications));
+      const achieveSection = sectionHtml("Awards / Achievements", renderSimpleList(data.achievements));
 
       return `
         <div class="tpl-1">
-          ${topBar}
-          ${summarySection}
-          ${skillsSection}
-          ${expSection}
-          ${projSection}
-          ${eduSection}
-          ${certSection}
-          ${achieveSection}
-          ${langSection}
+          <div class="left">
+            ${photo}
+            ${data.fullName ? `<h1 class="name">${escapeHtml(data.fullName)}</h1>` : ""}
+            ${data.headline ? `<div class="headline">${escapeHtml(data.headline)}</div>` : ""}
+            ${summarySection}
+            ${contactSection}
+            ${skillsSection}
+            ${languagesSection}
+          </div>
+          <div class="right">
+            ${expSection}
+            ${projSection}
+            ${eduSection}
+            ${certSection}
+            ${achieveSection}
+          </div>
         </div>
       `;
     }
@@ -1866,6 +1871,7 @@
           <div class="content">
             <div class="left">
               ${expSection}
+              ${projectsSection}
               ${eduSection}
             </div>
             <div class="right">
@@ -1874,7 +1880,6 @@
               ${skillsSection}
               ${languagesSection}
               ${certSection}
-              ${projectsSection}
               ${achievementsSection}
             </div>
           </div>
@@ -1901,8 +1906,8 @@
         ? sectionHtml("Languages", `<div class="compact-list">${data.languages.map(item => `<div class="compact-item">${escapeHtml(item)}</div>`).join("")}</div>`)
         : "";
       const expSection = sectionHtml("Experience", renderExperienceEntries(data.experience));
-      const eduSection = sectionHtml("Education", renderEducationEntries(data.education));
       const projectsSection = sectionHtml("Projects", renderSimpleList(data.projects));
+      const eduSection = sectionHtml("Education", renderEducationEntries(data.education));
       const certSection = sectionHtml("Certifications", renderSimpleList(data.certifications));
       const achieveSection = sectionHtml("Achievements", renderSimpleList(data.achievements));
 
@@ -1918,8 +1923,8 @@
             </div>
             <div class="right">
               ${expSection}
-              ${eduSection}
               ${projectsSection}
+              ${eduSection}
               ${certSection}
               ${achieveSection}
             </div>
@@ -1959,7 +1964,8 @@
 
     function renderSelectedTemplate() {
       const data = getFormData();
-      if (!data.fullName) data.fullName = "Your Name";
+      const fallbackName = data.fullName || "Your Name";
+      if (!data.fullName) data.fullName = fallbackName;
 
       let html = "";
       switch (data.template) {
@@ -1969,9 +1975,9 @@
         case "elegant-two-column":
           html = renderTemplateElegantTwoColumn(data);
           break;
-        case "ats-elite-classic":
+        case "sidebar-premium":
         default:
-          html = renderTemplateATSEliteClassic(data);
+          html = renderTemplateSidebarPremium(data);
           break;
       }
 
@@ -1985,24 +1991,6 @@
 
       state.generated = true;
       refs.resumePreview.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    function createFallbackImprovement(fieldKey, text) {
-      const cleaned = cleanText(text);
-      if (!cleaned) return "";
-
-      if (fieldKey === "summary") {
-        return cleaned
-          .replace(/\bi\b/g, "I")
-          .replace(/\s+/g, " ")
-          .replace(/^./, c => c.toUpperCase());
-      }
-
-      const bulletSentences = textToBullets(cleaned).slice(0, 4);
-      return bulletSentences.map(line => {
-        const formatted = line.replace(/^./, c => c.toUpperCase());
-        return formatted.endsWith(".") ? formatted : `${formatted}.`;
-      }).join("\n");
     }
 
     async function improveField(fieldKey) {
@@ -2082,6 +2070,24 @@
       }
     }
 
+    function createFallbackImprovement(fieldKey, text) {
+      const cleaned = cleanText(text);
+      if (!cleaned) return "";
+
+      if (fieldKey === "summary") {
+        return cleaned
+          .replace(/\bi\b/g, "I")
+          .replace(/\s+/g, " ")
+          .replace(/^./, c => c.toUpperCase());
+      }
+
+      const bulletSentences = textToBullets(cleaned).slice(0, 4);
+      return bulletSentences.map(line => {
+        const formatted = line.replace(/^./, c => c.toUpperCase());
+        return formatted.endsWith(".") ? formatted : `${formatted}.`;
+      }).join("\n");
+    }
+
     function updateWordCounters() {
       document.querySelectorAll("[data-limit]").forEach(clampWordCount);
     }
@@ -2120,7 +2126,9 @@
 
       refs.generateBtn.addEventListener("click", renderSelectedTemplate);
       refs.printBtn.addEventListener("click", () => {
-        if (!state.generated) renderSelectedTemplate();
+        if (!state.generated) {
+          renderSelectedTemplate();
+        }
         window.print();
       });
 
