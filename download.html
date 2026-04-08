@@ -1,205 +1,2160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATS Resume Builder</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ATSResumePro | Premium Resume Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08090b;
+      --panel: rgba(255,255,255,0.06);
+      --panel-2: rgba(255,255,255,0.08);
+      --stroke: rgba(255,255,255,0.1);
+      --text: #f5f7fb;
+      --muted: #a9b0bc;
+      --accent: #6ee7f9;
+      --accent-2: #7c3aed;
+      --success: #4ade80;
+      --warning: #fbbf24;
+      --danger: #f87171;
+      --shadow: 0 24px 80px rgba(0,0,0,0.32);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --resume-shadow: 0 24px 60px rgba(0,0,0,0.18);
+      --a4-width: 794px;
+      --a4-height: 1123px;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124,58,237,0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(110,231,249,0.12), transparent 26%),
+        linear-gradient(180deg, #090a0e 0%, #0d1015 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
 
-<style>
-body {margin:0;font-family:'Poppins';background:#0a0a0a;color:white;text-align:center;}
-.wrapper {max-width:1000px;margin:auto;padding:20px;}
-input,textarea {width:90%;padding:10px;margin:8px;}
-button {padding:12px;background:#00ffcc;border:none;border-radius:8px;cursor:pointer;}
-#formSection{display:none;}
-.resume{display:flex;background:white;color:black;margin-top:20px;}
-.sidebar{width:35%;background:#e6e6e6;padding:20px;}
-.main{width:65%;padding:20px;}
-.profile-img{width:120px;height:120px;border-radius:50%;overflow:hidden;margin:auto;background:#ccc;}
-.profile-img img{width:100%;height:100%;object-fit:cover;}
-.bar{height:6px;background:#ccc;}
-.fill{height:6px;background:black;}
-.timeline{position:relative;margin-left:20px;}
-.timeline::before{content:'';position:absolute;left:-10px;width:2px;height:100%;background:black;}
-.dot{width:10px;height:10px;background:black;border-radius:50%;position:absolute;left:-15px;top:5px;}
-</style>
+    a { color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    .page-shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid var(--stroke);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      color: #d9e2ee;
+      font-size: 13px;
+      margin-bottom: 18px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      font-weight: 800;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .builder-grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .builder-panel,
+    .preview-panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.04));
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .builder-panel {
+      padding: 20px;
+      position: sticky;
+      top: 16px;
+    }
+
+    .preview-panel {
+      padding: 20px;
+      min-height: 640px;
+    }
+
+    .flow-block {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .flow-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-weight: 700;
+      font-size: 15px;
+      color: #eff5ff;
+    }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #081018;
+      background: linear-gradient(135deg, var(--accent), #d9fbff);
+      flex: 0 0 auto;
+    }
+
+    .sub-copy {
+      margin: -4px 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .upload-card {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .image-preview {
+      width: 110px;
+      height: 110px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.1);
+      display: grid;
+      place-items: center;
+      color: #cbd5e1;
+      font-size: 12px;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .image-preview.circle {
+      border-radius: 999px;
+    }
+
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .upload-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .templates-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .template-card {
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+      cursor: pointer;
+      transition: .22s ease;
+      position: relative;
+      min-height: 182px;
+    }
+
+    .template-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(110,231,249,0.45);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.22);
+    }
+
+    .template-card.active {
+      border-color: rgba(110,231,249,0.85);
+      box-shadow: 0 0 0 2px rgba(110,231,249,0.15), 0 18px 40px rgba(0,0,0,0.25);
+    }
+
+    .template-thumb {
+      height: 112px;
+      padding: 12px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      display: grid;
+      place-items: center;
+    }
+
+    .mini-page {
+      width: 76px;
+      height: 100px;
+      background: #fff;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+    }
+
+    .mini-page.t1::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 27px;
+      background: #e7e7e7;
+    }
+
+    .mini-page.t1::after {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 10px;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: #c5c5c5;
+      box-shadow:
+        0 24px 0 0 #d3d3d3,
+        26px 10px 0 0 #202020,
+        26px 18px 0 0 #a1a1a1,
+        26px 30px 0 0 #c5c5c5,
+        26px 38px 0 0 #cfcfcf,
+        26px 48px 0 0 #d8d8d8;
+    }
+
+    .mini-page.t2::before {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; top: 0;
+      height: 22px;
+      background: #20242b;
+    }
+
+    .mini-page.t2::after {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 32px;
+      width: 2px;
+      height: 56px;
+      background: #242424;
+      box-shadow:
+        16px -14px 0 0 #c4c4c4,
+        16px -6px 0 0 #d7d7d7,
+        16px 8px 0 0 #d0d0d0,
+        16px 16px 0 0 #dbdbdb,
+        16px 30px 0 0 #d0d0d0,
+        16px 38px 0 0 #dddddd;
+    }
+
+    .mini-page.t3::before {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; top: 0;
+      height: 22px;
+      background: #ffffff;
+      box-shadow: inset 0 -1px 0 #e8e8e8;
+    }
+
+    .mini-page.t3::after {
+      content: "";
+      position: absolute;
+      left: 14px;
+      top: 34px;
+      width: 18px;
+      height: 2px;
+      background: #202020;
+      box-shadow:
+        0 12px 0 0 #cfcfcf,
+        0 20px 0 0 #d8d8d8,
+        28px -6px 0 0 #202020,
+        28px 2px 0 0 #cfcfcf,
+        28px 14px 0 0 #d3d3d3,
+        28px 22px 0 0 #dadada;
+    }
+
+    .template-meta {
+      padding: 12px;
+      text-align: left;
+    }
+
+    .template-name {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .template-desc {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .template-check {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.42);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 12px;
+      display: none;
+      place-items: center;
+    }
+
+    .template-card.active .template-check { display: grid; }
+
+    .form-section {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 16px;
+      margin-top: 16px;
+    }
+
+    .form-section:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .form-title {
+      text-align: left;
+      font-size: 14px;
+      font-weight: 700;
+      color: #eef6ff;
+      margin: 0 0 12px;
+      letter-spacing: .01em;
+    }
+
+    .grid-2,
+    .grid-3 {
+      display: grid;
+      gap: 12px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .field {
+      text-align: left;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 7px;
+      color: #dce5f0;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      padding: 12px 14px;
+      font: inherit;
+      outline: none;
+      transition: .2s ease;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 112px;
+      line-height: 1.7;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: rgba(110,231,249,0.6);
+      box-shadow: 0 0 0 3px rgba(110,231,249,0.12);
+    }
+
+    .help-text {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #93a0b2;
+      line-height: 1.5;
+    }
+
+    .counter {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #93a0b2;
+      text-align: right;
+    }
+
+    .repeat-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .repeat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 14px;
+      text-align: left;
+    }
+
+    .repeat-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .repeat-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #eff6ff;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #d8fbff);
+      color: #081018;
+      box-shadow: 0 12px 30px rgba(110,231,249,0.22);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.07);
+      color: #edf4ff;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: #dbe7f3;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .btn-danger {
+      background: rgba(248,113,113,0.12);
+      color: #ffd7d7;
+      border: 1px solid rgba(248,113,113,0.2);
+      padding: 8px 12px;
+      border-radius: 10px;
+    }
+
+    .primary-action {
+      margin-top: 8px;
+      width: 100%;
+      padding: 16px 18px;
+      font-size: 15px;
+    }
+
+    .preview-topbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .preview-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #eef4ff;
+    }
+
+    .preview-subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .preview-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .resume-stage {
+      border-radius: 22px;
+      padding: 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: auto;
+    }
+
+    .resume-empty {
+      min-height: 560px;
+      display: grid;
+      place-items: center;
+      color: #9bacbf;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .resume-empty strong {
+      display: block;
+      color: #eef6ff;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    #resumePreview {
+      width: var(--a4-width);
+      min-height: var(--a4-height);
+      margin: 0 auto;
+      background: #fff;
+      color: #1e293b;
+      box-shadow: var(--resume-shadow);
+      overflow: hidden;
+    }
+
+    .post-actions {
+      display: none;
+      margin-top: 16px;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .post-actions.show {
+      display: grid;
+    }
+
+    .action-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .action-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #eef5ff;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+
+    .action-copy {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .ats-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight: 700;
+      font-size: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #eff6ff;
+    }
+
+    .ats-pill strong {
+      font-size: 18px;
+    }
+
+    .ats-good { color: #d9ffe5; border-color: rgba(74,222,128,0.25); background: rgba(74,222,128,0.08); }
+    .ats-mid { color: #fff3d2; border-color: rgba(251,191,36,0.25); background: rgba(251,191,36,0.08); }
+    .ats-low { color: #ffe1e1; border-color: rgba(248,113,113,0.25); background: rgba(248,113,113,0.08); }
+
+    .status-msg {
+      margin-top: 10px;
+      text-align: left;
+      font-size: 12px;
+      color: #b6c3d3;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ===== Template Shared Resume Styles ===== */
+    .resume-link {
+      text-decoration: none;
+      color: inherit;
+      word-break: break-word;
+    }
+
+    .resume-section { margin-bottom: 22px; break-inside: avoid; }
+    .resume-section:last-child { margin-bottom: 0; }
+
+    .resume-section-title {
+      margin: 0 0 10px;
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .resume-muted {
+      color: #5b6472;
+      line-height: 1.7;
+    }
+
+    .resume-body {
+      line-height: 1.7;
+      color: #243041;
+    }
+
+    .resume-list,
+    .resume-bullets {
+      padding-left: 18px;
+      margin: 8px 0 0;
+    }
+
+    .resume-bullets li,
+    .resume-list li {
+      margin-bottom: 7px;
+      line-height: 1.65;
+      break-inside: avoid;
+    }
+
+    .meta-line {
+      color: #5b6472;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .contact-stack {
+      display: grid;
+      gap: 8px;
+    }
+
+    .contact-item-print {
+      line-height: 1.55;
+      color: #243041;
+      word-break: break-word;
+      font-size: 13px;
+    }
+
+    /* ===== Template 1 ===== */
+    .tpl-1 {
+      display: grid;
+      grid-template-columns: 31% 69%;
+      min-height: var(--a4-height);
+      background: #fff;
+    }
+
+    .tpl-1 .left {
+      background: #ececec;
+      padding: 38px 28px;
+      color: #1f2937;
+    }
+
+    .tpl-1 .right {
+      padding: 38px 34px;
+      color: #1f2937;
+    }
+
+    .tpl-1 .photo {
+      width: 128px;
+      height: 128px;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 0 auto 18px;
+      background: #d1d5db;
+    }
+
+    .tpl-1 .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tpl-1 .name {
+      text-align: center;
+      font-size: 30px;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+      margin: 0 0 6px;
+      word-break: break-word;
+    }
+
+    .tpl-1 .headline {
+      text-align: center;
+      color: #4b5563;
+      font-size: 14px;
+      margin: 0 0 24px;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .tpl-1 .resume-section-title {
+      padding-bottom: 6px;
+      border-bottom: 2px solid #1f2937;
+      margin-bottom: 12px;
+    }
+
+    .tpl-1 .skill-row {
+      margin-bottom: 12px;
+    }
+
+    .tpl-1 .skill-label {
+      font-size: 13px;
+      margin-bottom: 6px;
+      display: block;
+      color: #253042;
+    }
+
+    .tpl-1 .bar {
+      height: 6px;
+      background: #d6d6d6;
+      overflow: hidden;
+    }
+
+    .tpl-1 .fill {
+      height: 100%;
+      background: #1f2937;
+    }
+
+    .tpl-1 .entry {
+      margin-bottom: 18px;
+      break-inside: avoid;
+    }
+
+    .tpl-1 .entry-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+
+    .tpl-1 .entry-sub {
+      font-size: 13px;
+      color: #4b5563;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .tpl-1 .entry-body {
+      color: #243041;
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    /* ===== Template 2 ===== */
+    .tpl-2 {
+      min-height: var(--a4-height);
+      background: #ffffff;
+      color: #16202d;
+    }
+
+    .tpl-2 .header {
+      background: #1b2230;
+      color: #fff;
+      padding: 34px 36px 26px;
+    }
+
+    .tpl-2 .header-grid {
+      display: grid;
+      grid-template-columns: 112px 1fr auto;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .tpl-2 .photo {
+      width: 112px;
+      height: 112px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .tpl-2 .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tpl-2 .name {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+      font-weight: 800;
+      word-break: break-word;
+    }
+
+    .tpl-2 .headline {
+      margin: 6px 0 0;
+      font-size: 15px;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.6;
+    }
+
+    .tpl-2 .header-side {
+      text-align: right;
+      display: grid;
+      gap: 6px;
+    }
+
+    .tpl-2 .header-side .contact-item-print {
+      color: rgba(255,255,255,0.86);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .tpl-2 .content {
+      display: grid;
+      grid-template-columns: 61% 39%;
+      min-height: calc(var(--a4-height) - 172px);
+    }
+
+    .tpl-2 .left {
+      padding: 30px 32px 34px 36px;
+    }
+
+    .tpl-2 .right {
+      padding: 30px 28px 34px 26px;
+      background: #f5f7fa;
+      border-left: 1px solid #e4e8ef;
+    }
+
+    .tpl-2 .resume-section-title {
+      font-size: 12px;
+      letter-spacing: .22em;
+      color: #111827;
+      margin-bottom: 12px;
+    }
+
+    .tpl-2 .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .tpl-2 .timeline::before {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: #1b2230;
+    }
+
+    .tpl-2 .entry {
+      position: relative;
+      margin-bottom: 20px;
+      break-inside: avoid;
+    }
+
+    .tpl-2 .entry::before {
+      content: "";
+      position: absolute;
+      left: -18px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #1b2230;
+    }
+
+    .tpl-2 .entry-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .tpl-2 .entry-sub {
+      font-size: 13px;
+      color: #5b6472;
+      margin-bottom: 7px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .tpl-2 .entry-body {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #243041;
+    }
+
+    .tpl-2 .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tpl-2 .tag {
+      border: 1px solid #d7dde7;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      line-height: 1;
+      color: #233041;
+      background: #fff;
+    }
+
+    /* ===== Template 3 ===== */
+    .tpl-3 {
+      min-height: var(--a4-height);
+      background: #ffffff;
+      color: #1f2937;
+      padding: 34px 38px 36px;
+    }
+
+    .tpl-3 .top {
+      text-align: center;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 26px;
+    }
+
+    .tpl-3 .photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 0 auto 14px;
+      background: #d1d5db;
+    }
+
+    .tpl-3 .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tpl-3 .name {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.02;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 700;
+      word-break: break-word;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .tpl-3 .headline {
+      margin: 6px 0 0;
+      color: #566171;
+      font-size: 14px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .tpl-3 .grid {
+      display: grid;
+      grid-template-columns: 35% 65%;
+      gap: 30px;
+    }
+
+    .tpl-3 .left,
+    .tpl-3 .right {
+      min-width: 0;
+    }
+
+    .tpl-3 .resume-section-title {
+      letter-spacing: .24em;
+      border-bottom: 1px solid #d1d5db;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tpl-3 .entry {
+      margin-bottom: 18px;
+      break-inside: avoid;
+    }
+
+    .tpl-3 .entry-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 3px;
+      color: #111827;
+    }
+
+    .tpl-3 .entry-sub {
+      font-size: 13px;
+      line-height: 1.55;
+      color: #5b6472;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .tpl-3 .entry-body {
+      font-size: 13px;
+      line-height: 1.72;
+      color: #243041;
+    }
+
+    .tpl-3 .compact-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .tpl-3 .compact-item {
+      color: #243041;
+      font-size: 13px;
+      line-height: 1.6;
+      word-break: break-word;
+    }
+
+    .tpl-3 .skills-stack {
+      display: grid;
+      gap: 9px;
+    }
+
+    .tpl-3 .skill-line {
+      font-size: 13px;
+      line-height: 1.65;
+      color: #243041;
+    }
+
+    @media (max-width: 1140px) {
+      .builder-grid {
+        grid-template-columns: 1fr;
+      }
+      .builder-panel {
+        position: static;
+      }
+      .templates-grid {
+        grid-template-columns: 1fr;
+      }
+      #resumePreview {
+        transform-origin: top center;
+        width: 100%;
+        min-height: auto;
+      }
+      .resume-stage {
+        padding: 12px;
+      }
+      .tpl-1, .tpl-2 .content, .tpl-3 .grid {
+        grid-template-columns: 1fr !important;
+      }
+      .tpl-2 .header-grid {
+        grid-template-columns: 1fr;
+      }
+      .tpl-2 .header-side {
+        text-align: left;
+      }
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+      }
+
+      .page-shell,
+      .preview-panel,
+      .resume-stage {
+        max-width: none !important;
+        width: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+      }
+
+      .builder-panel,
+      .hero,
+      .preview-topbar,
+      .post-actions,
+      .hide-on-print,
+      .ats-print-hide {
+        display: none !important;
+      }
+
+      #resumePreview {
+        width: 210mm !important;
+        min-height: 297mm !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+      }
+
+      .tpl-1,
+      .tpl-2,
+      .tpl-3 {
+        width: 210mm !important;
+        min-height: 297mm !important;
+        break-after: auto;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="page-shell">
+    <section class="hero hide-on-print">
+      <div class="hero-badge">Premium startup-grade resume builder • ATS-ready • Print-perfect</div>
+      <h1>Create a resume that feels truly premium.</h1>
+      <p>Choose your image first, pick a premium template, enter your details, generate a polished preview, improve content with AI, save your work, and review ATS score at the end.</p>
+    </section>
 
-<div class="wrapper">
+    <div class="builder-grid">
+      <aside class="builder-panel hide-on-print">
+        <div class="flow-block" id="imageBlock">
+          <div class="flow-label"><span class="step-number">1</span>Choose Image</div>
+          <p class="sub-copy">Upload a profile image first. If you skip it, the selected template will still stay visually balanced.</p>
+          <div class="upload-card">
+            <div class="image-preview circle" id="builderImagePreview">No image<br>selected</div>
+            <div>
+              <div class="upload-actions">
+                <label class="btn btn-secondary" for="profilePhotoInput">Upload Photo</label>
+                <button type="button" class="btn btn-ghost" id="removePhotoBtn">Remove</button>
+              </div>
+              <div class="help-text">Recommended: square photo, clean background, face centered.</div>
+            </div>
+          </div>
+          <input id="profilePhotoInput" type="file" accept="image/*" class="hidden" />
+        </div>
 
-<h1>🚀 Build Resume</h1>
-<button onclick="start()">Start</button>
+        <div class="flow-block" id="templateBlock">
+          <div class="flow-label"><span class="step-number">2</span>Choose Template</div>
+          <p class="sub-copy">Pick one premium template family. The final rendering engine uses separate layouts, spacing rules, and section behavior for each.</p>
+          <div class="templates-grid" id="templateCards">
+            <div class="template-card active" data-template="sidebar-premium">
+              <div class="template-check">✓</div>
+              <div class="template-thumb">
+                <div class="mini-page t1"></div>
+              </div>
+              <div class="template-meta">
+                <div class="template-name">Sidebar Premium</div>
+                <div class="template-desc">Elegant sidebar layout with premium profile balance.</div>
+              </div>
+            </div>
 
-<div id="formSection">
+            <div class="template-card" data-template="executive-timeline">
+              <div class="template-check">✓</div>
+              <div class="template-thumb">
+                <div class="mini-page t2"></div>
+              </div>
+              <div class="template-meta">
+                <div class="template-name">Executive Timeline</div>
+                <div class="template-desc">Corporate layout with strong hierarchy and timeline flow.</div>
+              </div>
+            </div>
 
-<input id="name" placeholder="Full Name">
-<input id="title" placeholder="Job Title">
-<input id="phone" placeholder="Phone">
-<input id="email" placeholder="Email">
+            <div class="template-card" data-template="elegant-two-column">
+              <div class="template-check">✓</div>
+              <div class="template-thumb">
+                <div class="mini-page t3"></div>
+              </div>
+              <div class="template-meta">
+                <div class="template-name">Elegant Two-Column</div>
+                <div class="template-desc">Refined editorial balance with premium identity placement.</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<input type="file" id="imageUpload">
+        <div class="flow-block" id="formBlock">
+          <div class="flow-label"><span class="step-number">3</span>Resume Input / Editing</div>
+          <p class="sub-copy">Fill in the details below or load previously saved resume data before generating the preview.</p>
 
-<textarea id="profile" placeholder="Profile"></textarea>
-<button onclick="aiImprove('profile')">✨ Improve with AI</button>
+          <div class="btn-row" style="margin-bottom:14px;">
+            <button type="button" class="btn btn-ghost" id="loadSavedBtn">Load Saved Data</button>
+            <button type="button" class="btn btn-ghost" id="resetFormBtn">Reset Form</button>
+          </div>
 
-<textarea id="skills" placeholder="Skills (comma separated)"></textarea>
+          <div class="form-section">
+            <h3 class="form-title">Basic Details</h3>
+            <div class="grid-2">
+              <div class="field">
+                <label for="fullName">Full Name</label>
+                <input id="fullName" type="text" placeholder="Sophia Kharati">
+              </div>
+              <div class="field">
+                <label for="headline">Professional Headline / Job Title</label>
+                <input id="headline" type="text" placeholder="Cloud Data Engineer">
+              </div>
+              <div class="field">
+                <label for="phone">Phone Number</label>
+                <input id="phone" type="text" placeholder="+91 98765 43210">
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" type="email" placeholder="you@example.com">
+              </div>
+              <div class="field">
+                <label for="location">Location</label>
+                <input id="location" type="text" placeholder="Pune, India">
+              </div>
+              <div class="field">
+                <label for="linkedin">LinkedIn URL</label>
+                <input id="linkedin" type="url" placeholder="https://linkedin.com/in/yourprofile">
+              </div>
+              <div class="field grid-span-2" style="grid-column: 1 / -1;">
+                <label for="website">Website URL</label>
+                <input id="website" type="url" placeholder="https://yourwebsite.com">
+              </div>
+            </div>
+          </div>
 
-<h3>Experience</h3>
-<div id="experienceContainer"></div>
-<button onclick="addExperience()">+ Add</button>
+          <div class="form-section">
+            <h3 class="form-title">Professional Summary</h3>
+            <div class="field">
+              <label for="summary">Summary</label>
+              <textarea id="summary" data-limit="120" placeholder="Write a concise, results-driven summary that highlights your expertise, value, and career focus."></textarea>
+              <div class="counter" id="summaryCounter">0 / 120 words</div>
+            </div>
+          </div>
 
-<h3>Education</h3>
-<div id="educationContainer"></div>
-<button onclick="addEducation()">+ Add</button>
+          <div class="form-section">
+            <h3 class="form-title">Skills & Languages</h3>
+            <div class="field">
+              <label for="skills">Skills</label>
+              <textarea id="skills" data-limit="60" placeholder="Comma separated: IICS, Redshift, SQL, AWS, ETL, Data Warehousing"></textarea>
+              <div class="help-text">Use commas to separate each skill.</div>
+              <div class="counter" id="skillsCounter">0 / 60 words</div>
+            </div>
+            <div class="field" style="margin-top:12px;">
+              <label for="languages">Languages</label>
+              <input id="languages" type="text" placeholder="English, Hindi, Odia">
+            </div>
+          </div>
 
-<button onclick="saveData()">💾 Save</button>
-<button onclick="generateResume()">Generate</button>
+          <div class="form-section">
+            <div class="repeat-card-header">
+              <h3 class="form-title" style="margin:0;">Experience</h3>
+              <button type="button" class="btn btn-secondary" id="addExperienceBtn">+ Add Experience</button>
+            </div>
+            <div class="repeat-list" id="experienceList"></div>
+          </div>
 
-</div>
+          <div class="form-section">
+            <div class="repeat-card-header">
+              <h3 class="form-title" style="margin:0;">Education</h3>
+              <button type="button" class="btn btn-secondary" id="addEducationBtn">+ Add Education</button>
+            </div>
+            <div class="repeat-list" id="educationList"></div>
+          </div>
 
-<h2 id="atsScore"></h2>
-<div id="resume"></div>
+          <div class="form-section">
+            <h3 class="form-title">Additional Sections</h3>
+            <div class="field">
+              <label for="certifications">Certifications</label>
+              <textarea id="certifications" data-limit="80" placeholder="One per line or separated by commas"></textarea>
+              <div class="counter" id="certificationsCounter">0 / 80 words</div>
+            </div>
+            <div class="field" style="margin-top:12px;">
+              <label for="projects">Projects</label>
+              <textarea id="projects" data-limit="120" placeholder="Describe key projects. Use a new line for each project or bullet-style content."></textarea>
+              <div class="counter" id="projectsCounter">0 / 120 words</div>
+            </div>
+            <div class="field" style="margin-top:12px;">
+              <label for="achievements">Achievements / Awards</label>
+              <textarea id="achievements" data-limit="90" placeholder="List awards, recognitions, or standout outcomes."></textarea>
+              <div class="counter" id="achievementsCounter">0 / 90 words</div>
+            </div>
+          </div>
 
-<button onclick="downloadPDF()">Download PDF</button>
+          <div class="form-section">
+            <div class="flow-label" style="margin-bottom:10px;"><span class="step-number">4</span>Generate Resume</div>
+            <button type="button" class="btn btn-primary primary-action" id="generateBtn">Generate Premium Resume</button>
+          </div>
+        </div>
+      </aside>
 
-</div>
+      <section class="preview-panel">
+        <div class="preview-topbar hide-on-print">
+          <div>
+            <div class="preview-title">Resume Preview</div>
+            <div class="preview-subtitle">A4-perfect preview designed for clean PDF export and premium presentation.</div>
+          </div>
+          <div class="preview-actions">
+            <button type="button" class="btn btn-secondary" id="printBtn">Print / Save PDF</button>
+          </div>
+        </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+        <div class="resume-stage" id="resumeStage">
+          <div class="resume-empty" id="emptyState">
+            <div>
+              <strong>Your premium resume preview will appear here.</strong>
+              Upload an image, choose a template, enter your details, and generate the resume.
+            </div>
+          </div>
+          <div id="resumePreview" class="hidden"></div>
+        </div>
 
-<script>
+        <div class="post-actions ats-print-hide" id="postActions">
+          <div class="action-card">
+            <div class="flow-label" style="margin-bottom:8px;"><span class="step-number">5</span>Improve with AI</div>
+            <div class="action-copy">AI actions appear only after generation. They improve content without disrupting the selected premium template flow.</div>
+            <div class="btn-row">
+              <button type="button" class="btn btn-secondary" id="improveSummaryBtn">Improve Summary</button>
+              <button type="button" class="btn btn-secondary" id="improveExperienceBtn">Improve Experience</button>
+              <button type="button" class="btn btn-secondary" id="improveProjectsBtn">Improve Projects</button>
+            </div>
+            <div class="status-msg" id="aiStatus">AI is ready to improve content after generation. Connect your backend endpoint later to enable real AI rewriting.</div>
+          </div>
 
-/* START */
-function start(){
- document.getElementById("formSection").style.display="block";
- loadData();
-}
+          <div class="action-card">
+            <div class="flow-label" style="margin-bottom:8px;"><span class="step-number">6</span>Save</div>
+            <div class="action-copy">Save your entered data locally so you can return and continue later. Image file persistence is browser-limited, so photo may need re-uploading.</div>
+            <div class="btn-row">
+              <button type="button" class="btn btn-secondary" id="saveBtn">Save Resume Data</button>
+            </div>
+            <div class="status-msg" id="saveStatus">Nothing saved yet.</div>
+          </div>
 
-/* SAVE */
-function saveData(){
- const data={
-  name:name.value,title:title.value,phone:phone.value,email:email.value,
-  profile:profile.value,skills:skills.value
- };
- localStorage.setItem("resumeData",JSON.stringify(data));
- alert("Saved!");
-}
+          <div class="action-card">
+            <div class="flow-label" style="margin-bottom:8px;"><span class="step-number">7</span>ATS Score</div>
+            <div class="action-copy">ATS score stays visually secondary and appears after generation so it does not disturb the premium resume preview.</div>
+            <div id="atsScoreWrap">
+              <span class="ats-pill" id="atsScorePill"><span>ATS Score</span> <strong>—</strong></span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
 
-/* LOAD */
-function loadData(){
- let d=JSON.parse(localStorage.getItem("resumeData"));
- if(!d) return;
- name.value=d.name||"";
- title.value=d.title||"";
- phone.value=d.phone||"";
- email.value=d.email||"";
- profile.value=d.profile||"";
- skills.value=d.skills||"";
-}
+  <script>
+    const AI_ENDPOINT = "https://your-render-url.onrender.com/ai";
+    const STORAGE_KEY = "atsresumepro-premium-builder-v1";
 
-/* ADD EXPERIENCE */
-function addExperience(){
- let div=document.createElement("div");
- div.innerHTML=`<input placeholder="Role"><input placeholder="Company"><textarea placeholder="Description"></textarea>`;
- experienceContainer.appendChild(div);
-}
+    const state = {
+      selectedTemplate: "sidebar-premium",
+      imageDataUrl: "",
+      generated: false
+    };
 
-/* ADD EDUCATION */
-function addEducation(){
- let div=document.createElement("div");
- div.innerHTML=`<input placeholder="Degree"><input placeholder="University">`;
- educationContainer.appendChild(div);
-}
+    const refs = {
+      profilePhotoInput: document.getElementById("profilePhotoInput"),
+      builderImagePreview: document.getElementById("builderImagePreview"),
+      removePhotoBtn: document.getElementById("removePhotoBtn"),
+      templateCards: [...document.querySelectorAll(".template-card")],
+      fullName: document.getElementById("fullName"),
+      headline: document.getElementById("headline"),
+      phone: document.getElementById("phone"),
+      email: document.getElementById("email"),
+      location: document.getElementById("location"),
+      linkedin: document.getElementById("linkedin"),
+      website: document.getElementById("website"),
+      summary: document.getElementById("summary"),
+      skills: document.getElementById("skills"),
+      languages: document.getElementById("languages"),
+      certifications: document.getElementById("certifications"),
+      projects: document.getElementById("projects"),
+      achievements: document.getElementById("achievements"),
+      experienceList: document.getElementById("experienceList"),
+      educationList: document.getElementById("educationList"),
+      addExperienceBtn: document.getElementById("addExperienceBtn"),
+      addEducationBtn: document.getElementById("addEducationBtn"),
+      generateBtn: document.getElementById("generateBtn"),
+      printBtn: document.getElementById("printBtn"),
+      resumePreview: document.getElementById("resumePreview"),
+      emptyState: document.getElementById("emptyState"),
+      postActions: document.getElementById("postActions"),
+      improveSummaryBtn: document.getElementById("improveSummaryBtn"),
+      improveExperienceBtn: document.getElementById("improveExperienceBtn"),
+      improveProjectsBtn: document.getElementById("improveProjectsBtn"),
+      aiStatus: document.getElementById("aiStatus"),
+      saveBtn: document.getElementById("saveBtn"),
+      saveStatus: document.getElementById("saveStatus"),
+      atsScorePill: document.getElementById("atsScorePill"),
+      loadSavedBtn: document.getElementById("loadSavedBtn"),
+      resetFormBtn: document.getElementById("resetFormBtn")
+    };
 
-/* AI */
-async function aiImprove(id){
- let text=document.getElementById(id).value;
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
- try{
- let res=await fetch("https://your-render-url.onrender.com/ai",{
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body:JSON.stringify({text})
- });
+    function cleanText(value) {
+      return String(value ?? "").replace(/\s+/g, " ").trim();
+    }
 
- let data=await res.json();
- document.getElementById(id).value=data.result;
- }catch{
-  alert("AI not connected yet");
- }
-}
+    function splitCommaList(value) {
+      return String(value ?? "")
+        .split(",")
+        .map(v => cleanText(v))
+        .filter(Boolean);
+    }
 
-/* ATS */
-function calculateATS(profile,skillsCount,expCount){
- let s=40;
- if(profile.length>80) s+=20;
- if(skillsCount>=5) s+=20;
- if(expCount>=2) s+=15;
- return Math.min(s,98);
-}
+    function splitMultiList(value) {
+      return String(value ?? "")
+        .split(/\n|,/)
+        .map(v => cleanText(v.replace(/^[•\-–]\s*/, "")))
+        .filter(Boolean);
+    }
 
-/* GENERATE */
-function generateResume(){
+    function textToBullets(value) {
+      const lines = String(value ?? "")
+        .split(/\n/)
+        .map(v => cleanText(v.replace(/^[•\-–]\s*/, "")))
+        .filter(Boolean);
 
-let img="";
-if(imageUpload.files[0]){
- img=`<img src="${URL.createObjectURL(imageUpload.files[0])}">`;
-}
+      if (lines.length > 1) return lines;
 
-let expHTML="";
-let expBlocks=document.querySelectorAll("#experienceContainer div");
+      const sentenceBased = String(value ?? "")
+        .split(/(?<=[.!?])\s+/)
+        .map(v => cleanText(v))
+        .filter(Boolean);
 
-expBlocks.forEach(e=>{
- let i=e.querySelectorAll("input,textarea");
- expHTML+=`<div class="timeline-item"><div class="dot"></div><div><b>${i[0].value}</b><br>${i[1].value}<br>${i[2].value}</div></div>`;
-});
+      return sentenceBased.length > 1 ? sentenceBased : lines;
+    }
 
-let eduHTML="";
-document.querySelectorAll("#educationContainer div").forEach(e=>{
- let i=e.querySelectorAll("input");
- eduHTML+=`<p><b>${i[0].value}</b><br>${i[1].value}</p>`;
-});
+    function formatDateRange(start, end) {
+      const s = cleanText(start);
+      const e = cleanText(end);
+      if (s && e) return `${s} - ${e}`;
+      if (s) return `${s} - Present`;
+      if (e) return e;
+      return "";
+    }
 
-let skillsArr=skills.value.split(",");
-let skillHTML="";
-skillsArr.forEach(s=>{
- skillHTML+=`<div>${s}<div class="bar"><div class="fill" style="width:80%"></div></div></div>`;
-});
+    function buildLink(value, label) {
+      const v = cleanText(value);
+      if (!v) return "";
+      const isUrl = /^https?:\/\//i.test(v);
+      const href = isUrl ? v : `https://${v}`;
+      const text = label || v.replace(/^https?:\/\//i, "");
+      return `<a class="resume-link" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(text)}</a>`;
+    }
 
-let score=calculateATS(profile.value,skillsArr.length,expBlocks.length);
-atsScore.innerHTML="ATS Score: "+score+"%";
+    function hasContent(value) {
+      return cleanText(value).length > 0;
+    }
 
-resume.innerHTML=`
-<div class="resume">
-<div class="sidebar">
-<div class="profile-img">${img}</div>
-<h2>${name.value}</h2>
-<p>${title.value}</p>
+    function clampWordCount(el) {
+      const limit = Number(el.dataset.limit || 0);
+      if (!limit) return;
+      const words = cleanText(el.value).split(" ").filter(Boolean);
+      if (words.length > limit) {
+        el.value = words.slice(0, limit).join(" ");
+      }
+      const counter = document.getElementById(`${el.id}Counter`);
+      if (counter) {
+        const current = cleanText(el.value).split(" ").filter(Boolean);
+        const count = current[0] ? current.length : 0;
+        counter.textContent = `${count} / ${limit} words`;
+      }
+    }
 
-<h3>Profile</h3><p>${profile.value}</p>
+    function updateBuilderImagePreview() {
+      if (state.imageDataUrl) {
+        refs.builderImagePreview.innerHTML = `<img src="${state.imageDataUrl}" alt="Profile preview">`;
+      } else {
+        refs.builderImagePreview.innerHTML = `No image<br>selected`;
+      }
+    }
 
-<h3>Contact</h3><p>${phone.value}</p><p>${email.value}</p>
+    function createExperienceItem(data = {}) {
+      const card = document.createElement("div");
+      card.className = "repeat-card experience-item";
+      card.innerHTML = `
+        <div class="repeat-card-header">
+          <div class="repeat-card-title">Experience Entry</div>
+          <button type="button" class="btn-danger remove-item-btn">Remove</button>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Job Title</label>
+            <input type="text" class="exp-role" value="${escapeHtml(data.role || "")}" placeholder="Senior Data Engineer">
+          </div>
+          <div class="field">
+            <label>Company</label>
+            <input type="text" class="exp-company" value="${escapeHtml(data.company || "")}" placeholder="Company Name">
+          </div>
+          <div class="field">
+            <label>Start Date</label>
+            <input type="text" class="exp-start" value="${escapeHtml(data.start || "")}" placeholder="Jan 2022">
+          </div>
+          <div class="field">
+            <label>End Date</label>
+            <input type="text" class="exp-end" value="${escapeHtml(data.end || "")}" placeholder="Present">
+          </div>
+        </div>
+        <div class="field" style="margin-top:12px;">
+          <label>Description</label>
+          <textarea class="exp-description" data-limit="120" placeholder="Write outcome-focused bullets or short statements.">${escapeHtml(data.description || "")}</textarea>
+          <div class="counter exp-counter">0 / 120 words</div>
+        </div>
+      `;
+      card.querySelector(".remove-item-btn").addEventListener("click", () => {
+        card.remove();
+      });
+      const textarea = card.querySelector(".exp-description");
+      textarea.addEventListener("input", () => updateInlineCounter(textarea, card.querySelector(".exp-counter")));
+      updateInlineCounter(textarea, card.querySelector(".exp-counter"));
+      refs.experienceList.appendChild(card);
+    }
 
-<h3>Skills</h3>${skillHTML}
-</div>
+    function createEducationItem(data = {}) {
+      const card = document.createElement("div");
+      card.className = "repeat-card education-item";
+      card.innerHTML = `
+        <div class="repeat-card-header">
+          <div class="repeat-card-title">Education Entry</div>
+          <button type="button" class="btn-danger remove-item-btn">Remove</button>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Degree</label>
+            <input type="text" class="edu-degree" value="${escapeHtml(data.degree || "")}" placeholder="B.Tech in Computer Science">
+          </div>
+          <div class="field">
+            <label>Institute</label>
+            <input type="text" class="edu-school" value="${escapeHtml(data.school || "")}" placeholder="University Name">
+          </div>
+          <div class="field">
+            <label>Start Date</label>
+            <input type="text" class="edu-start" value="${escapeHtml(data.start || "")}" placeholder="2018">
+          </div>
+          <div class="field">
+            <label>End Date</label>
+            <input type="text" class="edu-end" value="${escapeHtml(data.end || "")}" placeholder="2022">
+          </div>
+        </div>
+        <div class="field" style="margin-top:12px;">
+          <label>Details</label>
+          <textarea class="edu-details" data-limit="60" placeholder="Optional specialization, projects, honors, or key detail.">${escapeHtml(data.details || "")}</textarea>
+          <div class="counter edu-counter">0 / 60 words</div>
+        </div>
+      `;
+      card.querySelector(".remove-item-btn").addEventListener("click", () => {
+        card.remove();
+      });
+      const textarea = card.querySelector(".edu-details");
+      textarea.addEventListener("input", () => updateInlineCounter(textarea, card.querySelector(".edu-counter")));
+      updateInlineCounter(textarea, card.querySelector(".edu-counter"));
+      refs.educationList.appendChild(card);
+    }
 
-<div class="main">
-<h2>Experience</h2><div class="timeline">${expHTML}</div>
-<h2>Education</h2>${eduHTML}
-</div>
-</div>`;
+    function updateInlineCounter(textarea, counterEl) {
+      const limit = Number(textarea.dataset.limit || 0);
+      const words = cleanText(textarea.value).split(" ").filter(Boolean);
+      if (limit && words.length > limit) {
+        textarea.value = words.slice(0, limit).join(" ");
+      }
+      const finalWords = cleanText(textarea.value).split(" ").filter(Boolean);
+      const count = finalWords[0] ? finalWords.length : 0;
+      counterEl.textContent = `${count} / ${limit} words`;
+    }
 
-resume.style.display="block";
-}
+    function collectExperience() {
+      return [...refs.experienceList.querySelectorAll(".experience-item")].map(item => ({
+        role: cleanText(item.querySelector(".exp-role").value),
+        company: cleanText(item.querySelector(".exp-company").value),
+        start: cleanText(item.querySelector(".exp-start").value),
+        end: cleanText(item.querySelector(".exp-end").value),
+        description: cleanText(item.querySelector(".exp-description").value)
+      })).filter(item => item.role || item.company || item.description || item.start || item.end);
+    }
 
-/* PDF */
-function downloadPDF(){
- html2pdf().from(resume).save("resume.pdf");
-}
+    function collectEducation() {
+      return [...refs.educationList.querySelectorAll(".education-item")].map(item => ({
+        degree: cleanText(item.querySelector(".edu-degree").value),
+        school: cleanText(item.querySelector(".edu-school").value),
+        start: cleanText(item.querySelector(".edu-start").value),
+        end: cleanText(item.querySelector(".edu-end").value),
+        details: cleanText(item.querySelector(".edu-details").value)
+      })).filter(item => item.degree || item.school || item.details || item.start || item.end);
+    }
 
-</script>
+    function getFormData() {
+      return {
+        template: state.selectedTemplate,
+        imageDataUrl: state.imageDataUrl,
+        fullName: cleanText(refs.fullName.value),
+        headline: cleanText(refs.headline.value),
+        phone: cleanText(refs.phone.value),
+        email: cleanText(refs.email.value),
+        location: cleanText(refs.location.value),
+        linkedin: cleanText(refs.linkedin.value),
+        website: cleanText(refs.website.value),
+        summary: cleanText(refs.summary.value),
+        skills: splitCommaList(refs.skills.value),
+        languages: splitCommaList(refs.languages.value),
+        experience: collectExperience(),
+        education: collectEducation(),
+        certifications: splitMultiList(refs.certifications.value),
+        projects: splitMultiList(refs.projects.value),
+        achievements: splitMultiList(refs.achievements.value)
+      };
+    }
 
+    function saveData() {
+      const data = getFormData();
+      const savePayload = { ...data, imageDataUrl: "" };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(savePayload));
+      refs.saveStatus.textContent = "Saved locally. Image file may need re-uploading when you return.";
+    }
+
+    function loadData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        refs.saveStatus.textContent = "No saved data found yet.";
+        return false;
+      }
+      try {
+        const data = JSON.parse(raw);
+        refs.fullName.value = data.fullName || "";
+        refs.headline.value = data.headline || "";
+        refs.phone.value = data.phone || "";
+        refs.email.value = data.email || "";
+        refs.location.value = data.location || "";
+        refs.linkedin.value = data.linkedin || "";
+        refs.website.value = data.website || "";
+        refs.summary.value = data.summary || "";
+        refs.skills.value = (data.skills || []).join(", ");
+        refs.languages.value = (data.languages || []).join(", ");
+        refs.certifications.value = (data.certifications || []).join("\n");
+        refs.projects.value = (data.projects || []).join("\n");
+        refs.achievements.value = (data.achievements || []).join("\n");
+
+        refs.experienceList.innerHTML = "";
+        refs.educationList.innerHTML = "";
+        (data.experience || []).forEach(item => createExperienceItem(item));
+        (data.education || []).forEach(item => createEducationItem(item));
+
+        if (!refs.experienceList.children.length) createExperienceItem();
+        if (!refs.educationList.children.length) createEducationItem();
+
+        refs.templateCards.forEach(card => {
+          const active = card.dataset.template === (data.template || "sidebar-premium");
+          card.classList.toggle("active", active);
+        });
+        state.selectedTemplate = data.template || "sidebar-premium";
+
+        updateWordCounters();
+        refs.saveStatus.textContent = "Saved data loaded. Re-upload photo if needed.";
+        return true;
+      } catch (e) {
+        refs.saveStatus.textContent = "Saved data could not be loaded.";
+        return false;
+      }
+    }
+
+    function resetForm() {
+      refs.fullName.value = "";
+      refs.headline.value = "";
+      refs.phone.value = "";
+      refs.email.value = "";
+      refs.location.value = "";
+      refs.linkedin.value = "";
+      refs.website.value = "";
+      refs.summary.value = "";
+      refs.skills.value = "";
+      refs.languages.value = "";
+      refs.certifications.value = "";
+      refs.projects.value = "";
+      refs.achievements.value = "";
+      refs.experienceList.innerHTML = "";
+      refs.educationList.innerHTML = "";
+      createExperienceItem();
+      createEducationItem();
+      state.imageDataUrl = "";
+      refs.profilePhotoInput.value = "";
+      updateBuilderImagePreview();
+      updateWordCounters();
+    }
+
+    function sectionHtml(title, content, extraClass = "") {
+      if (!content) return "";
+      return `<section class="resume-section ${extraClass}">
+        <h3 class="resume-section-title">${escapeHtml(title)}</h3>
+        ${content}
+      </section>`;
+    }
+
+    function renderContactList(data, light = false) {
+      const items = [];
+      if (data.phone) items.push(`<div class="contact-item-print">${light ? "Phone:" : "Phone"} ${escapeHtml(data.phone)}</div>`);
+      if (data.email) items.push(`<div class="contact-item-print">${light ? "Email:" : "Email"} ${escapeHtml(data.email)}</div>`);
+      if (data.location) items.push(`<div class="contact-item-print">${light ? "Location:" : "Location"} ${escapeHtml(data.location)}</div>`);
+      if (data.linkedin) items.push(`<div class="contact-item-print">${light ? "LinkedIn:" : "LinkedIn"} ${buildLink(data.linkedin, data.linkedin.replace(/^https?:\/\//i, ""))}</div>`);
+      if (data.website) items.push(`<div class="contact-item-print">${light ? "Website:" : "Website"} ${buildLink(data.website, data.website.replace(/^https?:\/\//i, ""))}</div>`);
+      if (!items.length) return "";
+      return `<div class="contact-stack">${items.join("")}</div>`;
+    }
+
+    function renderBullets(lines) {
+      if (!lines || !lines.length) return "";
+      return `<ul class="resume-bullets">${lines.map(line => `<li>${escapeHtml(line)}</li>`).join("")}</ul>`;
+    }
+
+    function renderParagraph(text) {
+      if (!text) return "";
+      return `<div class="resume-body">${escapeHtml(text)}</div>`;
+    }
+
+    function renderExperienceEntries(entries, className = "") {
+      return entries.map(item => {
+        const dateRange = formatDateRange(item.start, item.end);
+        const subParts = [item.company, dateRange].filter(Boolean);
+        const bullets = textToBullets(item.description);
+        const body = bullets.length > 1 ? renderBullets(bullets) : (bullets[0] ? `<div class="entry-body">${escapeHtml(bullets[0])}</div>` : "");
+        return `<div class="entry ${className}">
+          ${item.role ? `<div class="entry-title">${escapeHtml(item.role)}</div>` : ""}
+          ${subParts.length ? `<div class="entry-sub">${escapeHtml(subParts.join(" • "))}</div>` : ""}
+          ${body}
+        </div>`;
+      }).join("");
+    }
+
+    function renderEducationEntries(entries, className = "") {
+      return entries.map(item => {
+        const dateRange = formatDateRange(item.start, item.end);
+        const subParts = [item.school, dateRange].filter(Boolean);
+        return `<div class="entry ${className}">
+          ${item.degree ? `<div class="entry-title">${escapeHtml(item.degree)}</div>` : ""}
+          ${subParts.length ? `<div class="entry-sub">${escapeHtml(subParts.join(" • "))}</div>` : ""}
+          ${item.details ? `<div class="entry-body">${escapeHtml(item.details)}</div>` : ""}
+        </div>`;
+      }).join("");
+    }
+
+    function renderSimpleList(items) {
+      if (!items.length) return "";
+      return `<ul class="resume-list">${items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+    }
+
+    function renderTemplateSidebarPremium(data) {
+      const photo = data.imageDataUrl ? `<div class="photo"><img src="${data.imageDataUrl}" alt="Profile Photo"></div>` : "";
+      const skills = data.skills.length
+        ? data.skills.map((skill, index) => {
+            const widths = [92, 86, 82, 78, 74, 70];
+            const width = widths[index % widths.length];
+            return `<div class="skill-row">
+              <span class="skill-label">${escapeHtml(skill)}</span>
+              <div class="bar"><div class="fill" style="width:${width}%"></div></div>
+            </div>`;
+          }).join("")
+        : "";
+
+      const summarySection = sectionHtml("Profile", renderParagraph(data.summary));
+      const contactSection = sectionHtml("Contact", renderContactList(data));
+      const skillsSection = sectionHtml("Skills", skills);
+      const languagesSection = sectionHtml("Languages", renderSimpleList(data.languages));
+      const expSection = sectionHtml("Work Experience", renderExperienceEntries(data.experience));
+      const eduSection = sectionHtml("Education", renderEducationEntries(data.education));
+      const certSection = sectionHtml("Certifications / Training", renderSimpleList(data.certifications));
+      const projSection = sectionHtml("Projects", renderSimpleList(data.projects));
+      const achieveSection = sectionHtml("Awards / Achievements", renderSimpleList(data.achievements));
+
+      return `
+        <div class="tpl-1">
+          <div class="left">
+            ${photo}
+            ${data.fullName ? `<h1 class="name">${escapeHtml(data.fullName)}</h1>` : ""}
+            ${data.headline ? `<div class="headline">${escapeHtml(data.headline)}</div>` : ""}
+            ${summarySection}
+            ${contactSection}
+            ${skillsSection}
+            ${languagesSection}
+          </div>
+          <div class="right">
+            ${expSection}
+            ${eduSection}
+            ${certSection}
+            ${projSection}
+            ${achieveSection}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTemplateExecutiveTimeline(data) {
+      const photo = data.imageDataUrl ? `<div class="photo"><img src="${data.imageDataUrl}" alt="Profile Photo"></div>` : "";
+      const summarySection = sectionHtml("Profile", renderParagraph(data.summary));
+      const contactSection = sectionHtml("Contact", renderContactList(data, true));
+      const skillsSection = data.skills.length
+        ? sectionHtml("Skills", `<div class="tag-list">${data.skills.map(skill => `<span class="tag">${escapeHtml(skill)}</span>`).join("")}</div>`)
+        : "";
+      const languagesSection = sectionHtml("Languages", renderSimpleList(data.languages));
+      const certSection = sectionHtml("Certifications", renderSimpleList(data.certifications));
+      const projectsSection = sectionHtml("Projects", renderSimpleList(data.projects));
+      const achievementsSection = sectionHtml("Achievements", renderSimpleList(data.achievements));
+      const expSection = sectionHtml("Experience", `<div class="timeline">${renderExperienceEntries(data.experience)}</div>`);
+      const eduSection = sectionHtml("Education", `<div class="timeline">${renderEducationEntries(data.education)}</div>`);
+
+      return `
+        <div class="tpl-2">
+          <div class="header">
+            <div class="header-grid">
+              ${photo || '<div></div>'}
+              <div>
+                ${data.fullName ? `<h1 class="name">${escapeHtml(data.fullName)}</h1>` : ""}
+                ${data.headline ? `<div class="headline">${escapeHtml(data.headline)}</div>` : ""}
+              </div>
+              <div class="header-side">
+                ${data.phone ? `<div class="contact-item-print">${escapeHtml(data.phone)}</div>` : ""}
+                ${data.email ? `<div class="contact-item-print">${escapeHtml(data.email)}</div>` : ""}
+                ${data.location ? `<div class="contact-item-print">${escapeHtml(data.location)}</div>` : ""}
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <div class="left">
+              ${expSection}
+              ${eduSection}
+            </div>
+            <div class="right">
+              ${summarySection}
+              ${contactSection}
+              ${skillsSection}
+              ${languagesSection}
+              ${certSection}
+              ${projectsSection}
+              ${achievementsSection}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTemplateElegantTwoColumn(data) {
+      const photo = data.imageDataUrl ? `<div class="photo"><img src="${data.imageDataUrl}" alt="Profile Photo"></div>` : "";
+      const topBlock = `
+        <div class="top">
+          ${photo}
+          ${data.fullName ? `<h1 class="name">${escapeHtml(data.fullName)}</h1>` : ""}
+          ${data.headline ? `<div class="headline">${escapeHtml(data.headline)}</div>` : ""}
+        </div>
+      `;
+
+      const profileSection = sectionHtml("Profile", renderParagraph(data.summary));
+      const personalSection = sectionHtml("Contact", renderContactList(data));
+      const skillsSection = data.skills.length
+        ? sectionHtml("Skills", `<div class="skills-stack">${data.skills.map(skill => `<div class="skill-line">${escapeHtml(skill)}</div>`).join("")}</div>`)
+        : "";
+      const languagesSection = data.languages.length
+        ? sectionHtml("Languages", `<div class="compact-list">${data.languages.map(item => `<div class="compact-item">${escapeHtml(item)}</div>`).join("")}</div>`)
+        : "";
+      const expSection = sectionHtml("Experience", renderExperienceEntries(data.experience));
+      const eduSection = sectionHtml("Education", renderEducationEntries(data.education));
+      const projectsSection = sectionHtml("Projects", renderSimpleList(data.projects));
+      const certSection = sectionHtml("Certifications", renderSimpleList(data.certifications));
+      const achieveSection = sectionHtml("Achievements", renderSimpleList(data.achievements));
+
+      return `
+        <div class="tpl-3">
+          ${topBlock}
+          <div class="grid">
+            <div class="left">
+              ${profileSection}
+              ${personalSection}
+              ${skillsSection}
+              ${languagesSection}
+            </div>
+            <div class="right">
+              ${expSection}
+              ${eduSection}
+              ${projectsSection}
+              ${certSection}
+              ${achieveSection}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function computeATS(data) {
+      let score = 38;
+      if (data.fullName) score += 4;
+      if (data.headline) score += 5;
+      if (data.phone) score += 4;
+      if (data.email) score += 4;
+      if (data.location) score += 3;
+      if (data.linkedin || data.website) score += 3;
+      if (data.summary && data.summary.split(" ").length >= 35) score += 12;
+      if (data.skills.length >= 5) score += 10;
+      if (data.experience.length >= 1) score += 10;
+      if (data.experience.length >= 2) score += 6;
+      if (data.education.length >= 1) score += 6;
+      if (data.certifications.length) score += 4;
+      if (data.projects.length) score += 5;
+      if (data.achievements.length) score += 4;
+      if (data.languages.length) score += 2;
+      if (data.imageDataUrl) score += 1;
+      return Math.min(score, 98);
+    }
+
+    function updateATSPill(score) {
+      refs.atsScorePill.className = "ats-pill";
+      if (score >= 82) refs.atsScorePill.classList.add("ats-good");
+      else if (score >= 68) refs.atsScorePill.classList.add("ats-mid");
+      else refs.atsScorePill.classList.add("ats-low");
+      refs.atsScorePill.innerHTML = `<span>ATS Score</span> <strong>${score}%</strong>`;
+    }
+
+    function renderSelectedTemplate() {
+      const data = getFormData();
+      const fallbackName = data.fullName || "Your Name";
+      if (!data.fullName) data.fullName = fallbackName;
+
+      let html = "";
+      switch (data.template) {
+        case "executive-timeline":
+          html = renderTemplateExecutiveTimeline(data);
+          break;
+        case "elegant-two-column":
+          html = renderTemplateElegantTwoColumn(data);
+          break;
+        case "sidebar-premium":
+        default:
+          html = renderTemplateSidebarPremium(data);
+          break;
+      }
+
+      refs.resumePreview.innerHTML = html;
+      refs.resumePreview.classList.remove("hidden");
+      refs.emptyState.classList.add("hidden");
+      refs.postActions.classList.add("show");
+
+      const score = computeATS(data);
+      updateATSPill(score);
+
+      state.generated = true;
+      refs.resumePreview.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    async function improveField(fieldKey) {
+      const fieldMap = {
+        summary: refs.summary,
+        projects: refs.projects
+      };
+      let rawText = "";
+      let targetEl = null;
+
+      if (fieldKey === "experience") {
+        const entries = collectExperience();
+        rawText = entries.map(item => {
+          const pieces = [item.role, item.company, formatDateRange(item.start, item.end), item.description].filter(Boolean);
+          return pieces.join(" | ");
+        }).join("\n");
+      } else {
+        targetEl = fieldMap[fieldKey];
+        rawText = targetEl ? targetEl.value.trim() : "";
+      }
+
+      if (!rawText) {
+        refs.aiStatus.textContent = "Add content first before using AI improvement.";
+        return;
+      }
+
+      refs.aiStatus.textContent = "Improving content...";
+      try {
+        const response = await fetch(AI_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: rawText,
+            instruction: "Rewrite this for a premium ATS-friendly resume. Keep it concise, professional, and achievement-driven."
+          })
+        });
+
+        if (!response.ok) throw new Error("AI request failed");
+        const data = await response.json();
+        const improved = cleanText(data.result || data.content || "");
+
+        if (!improved) throw new Error("No AI output");
+
+        if (fieldKey === "summary" && targetEl) {
+          targetEl.value = improved;
+          clampWordCount(targetEl);
+        } else if (fieldKey === "projects" && targetEl) {
+          targetEl.value = improved;
+          clampWordCount(targetEl);
+        } else if (fieldKey === "experience") {
+          const firstDesc = refs.experienceList.querySelector(".exp-description");
+          if (firstDesc) {
+            firstDesc.value = improved;
+            updateInlineCounter(firstDesc, firstDesc.closest(".field").querySelector(".exp-counter"));
+          }
+        }
+
+        refs.aiStatus.textContent = "AI improvement applied successfully.";
+        if (state.generated) renderSelectedTemplate();
+      } catch (err) {
+        const fallback = createFallbackImprovement(fieldKey, rawText);
+        if (fieldKey === "summary" && refs.summary) {
+          refs.summary.value = fallback;
+          clampWordCount(refs.summary);
+        } else if (fieldKey === "projects" && refs.projects) {
+          refs.projects.value = fallback;
+          clampWordCount(refs.projects);
+        } else if (fieldKey === "experience") {
+          const firstDesc = refs.experienceList.querySelector(".exp-description");
+          if (firstDesc) {
+            firstDesc.value = fallback;
+            updateInlineCounter(firstDesc, firstDesc.closest(".field").querySelector(".exp-counter"));
+          }
+        }
+        refs.aiStatus.textContent = "AI backend not connected yet. Applied a smart built-in improvement instead.";
+        if (state.generated) renderSelectedTemplate();
+      }
+    }
+
+    function createFallbackImprovement(fieldKey, text) {
+      const cleaned = cleanText(text);
+      if (!cleaned) return "";
+
+      if (fieldKey === "summary") {
+        return cleaned
+          .replace(/\bi\b/g, "I")
+          .replace(/\s+/g, " ")
+          .replace(/^./, c => c.toUpperCase());
+      }
+
+      const bulletSentences = textToBullets(cleaned).slice(0, 4);
+      return bulletSentences.map(line => {
+        const formatted = line.replace(/^./, c => c.toUpperCase());
+        return formatted.endsWith(".") ? formatted : `${formatted}.`;
+      }).join("\n");
+    }
+
+    function updateWordCounters() {
+      document.querySelectorAll("[data-limit]").forEach(clampWordCount);
+    }
+
+    function attachGlobalEvents() {
+      refs.profilePhotoInput.addEventListener("change", e => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          state.imageDataUrl = reader.result;
+          updateBuilderImagePreview();
+          if (state.generated) renderSelectedTemplate();
+        };
+        reader.readAsDataURL(file);
+      });
+
+      refs.removePhotoBtn.addEventListener("click", () => {
+        state.imageDataUrl = "";
+        refs.profilePhotoInput.value = "";
+        updateBuilderImagePreview();
+        if (state.generated) renderSelectedTemplate();
+      });
+
+      refs.templateCards.forEach(card => {
+        card.addEventListener("click", () => {
+          refs.templateCards.forEach(c => c.classList.remove("active"));
+          card.classList.add("active");
+          state.selectedTemplate = card.dataset.template;
+          if (state.generated) renderSelectedTemplate();
+        });
+      });
+
+      refs.addExperienceBtn.addEventListener("click", () => createExperienceItem());
+      refs.addEducationBtn.addEventListener("click", () => createEducationItem());
+
+      refs.generateBtn.addEventListener("click", renderSelectedTemplate);
+      refs.printBtn.addEventListener("click", () => {
+        if (!state.generated) {
+          renderSelectedTemplate();
+        }
+        window.print();
+      });
+
+      refs.improveSummaryBtn.addEventListener("click", () => improveField("summary"));
+      refs.improveExperienceBtn.addEventListener("click", () => improveField("experience"));
+      refs.improveProjectsBtn.addEventListener("click", () => improveField("projects"));
+
+      refs.saveBtn.addEventListener("click", saveData);
+      refs.loadSavedBtn.addEventListener("click", () => {
+        const loaded = loadData();
+        if (loaded) refs.loadSavedBtn.textContent = "Loaded";
+        setTimeout(() => refs.loadSavedBtn.textContent = "Load Saved Data", 1400);
+      });
+      refs.resetFormBtn.addEventListener("click", resetForm);
+
+      document.querySelectorAll("[data-limit]").forEach(el => {
+        el.addEventListener("input", () => clampWordCount(el));
+      });
+    }
+
+    function init() {
+      updateBuilderImagePreview();
+      attachGlobalEvents();
+      createExperienceItem();
+      createEducationItem();
+      updateWordCounters();
+      loadData();
+    }
+
+    init();
+  </script>
 </body>
 </html>
